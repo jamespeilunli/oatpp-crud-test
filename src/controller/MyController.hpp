@@ -38,8 +38,8 @@ public:
 
   // https://github.com/oatpp/oatpp/issues/20
   ENDPOINT("GET", "isEven/*", getUserWithQueryParams,
-           REQUEST(std::shared_ptr<IncomingRequest>, request) // Map request object to endpoint method
-           ) {
+    REQUEST(std::shared_ptr<IncomingRequest>, request) // Map request object to endpoint method
+    ) {
 
     /* get url 'tail' - everything that comes after '*' */
     String tail = request->getPathTail(); // everything that goes after '*'
@@ -61,29 +61,29 @@ public:
 
   }
 
-    ENDPOINT("GET", "/create", getUsers,
-           QUERIES(QueryParams, queryParams)) {
+  ENDPOINT("GET", "/create", getUsers,
+    QUERIES(QueryParams, queryParams)) {
 
-           std::ofstream data_file;
-           data_file.open ("data.json");
-           data_file << "{";
-           bool first = true;
-           for (auto& param : queryParams.getAll()) {
-               int key = std::stoi(param.first.std_str());
-               int value = std::stoi(param.second.std_str());
+    std::ofstream data_file;
+    data_file.open ("data.json");
+    data_file << "{";
+    bool first = true;
+    for (auto& param : queryParams.getAll()) {
+      int key = std::stoi(param.first.std_str());
+      int value = std::stoi(param.second.std_str());
 
-               if (first) {
-                   data_file << key << ":" << value;
-                   first = false;
-               } else {
-                   data_file << "," << key << ":" << value;
-               }
-           }
-           data_file << "}";
-           data_file.close();
-
-        return createResponse(Status::CODE_418, "Thirsty Vitus");
+      if (first) {
+        data_file << key << ":" << value;
+        first = false;
+      } else {
+        data_file << "," << key << ":" << value;
+      }
     }
+    data_file << "}";
+    data_file.close();
+
+    return createResponse(Status::CODE_418, "Thirsty Vitus");
+  }
 };
 
 #include OATPP_CODEGEN_END(ApiController) //<-- End Codegen
